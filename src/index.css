@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .btnSky {
+    @apply py-1 px-2 shadow rounded transition duration-200  bg-sky-300 hover:bg-sky-400 hover:text-white dark:bg-sky-600 dark:hover:bg-sky-800
+  }
+}
