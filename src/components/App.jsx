@@ -14,13 +14,19 @@ const App = () => {
   const [dark, setDark] = React.useState(false);
   // Para que la aplicación sepa cuando mostrar los settings...
   const [showSettings, setShowSettings] = React.useState(false);
+  // Configuracion inicial en localStorage de config si no existe (para la configuracion de estilo)
+  const defaultConfig = {theme: "light", lang: "es"}
 
   /*
     Con useEffect se crea una variable de estado donde se almacena
     el valor de la configuracion del tema (modoPantalla) de LocalStorage
     cada vez que cambia la variable de estado 'dark'
    */
-  React.useEffect(() => {
+  // Si no existe (ocurre en la primera ejecucion) crea la variable local por defecto
+  // eslint-disable-next-line eqeqeq
+  if ( localStorage.getItem('config') == undefined ) localStorage.setItem('config', JSON.stringify(defaultConfig)) ;
+
+  React.useEffect(() => { 
     const config = JSON.parse(localStorage.getItem('config'));
     setDark(config.theme); 
   }, [dark]);
