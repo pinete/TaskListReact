@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import useList from '../../hooks/useList';
+import useSweetAlert from '../../hooks/useSweetAlert'
 import { motion } from 'framer-motion'
-import { addTask, getTasks, toggleComplete } from '../../firebase/TasksController';
+import { addTask, deleteTask, getTasks, toggleComplete } from '../../firebase/TasksController';
+// import Swal from 'sweetalert2';
 
 // import useInitialTasks from '../../hooks/useInitialTasks';
 
@@ -16,6 +18,7 @@ import { addTask, getTasks, toggleComplete } from '../../firebase/TasksControlle
 const TaskList = ({ showSettings, setShowSettings }) => {
   const [newTask, setNewTask] = useState('');
   const tasks = useList(getTasks)
+  const alert = useSweetAlert()
 
   /**
    * Añade una nueva tarea a BD. Si todo OK la añade tambien a la 
@@ -39,6 +42,25 @@ const TaskList = ({ showSettings, setShowSettings }) => {
   };
 
   /**
+   * Borra de la DB y de la lista la tarea seleccionada con la posicion index
+   * @param {*} index  Posicion en la lista
+   */
+
+
+  const delTask = (index) => {
+
+    const deleteItemDBAndList = () => {
+      const item = tasks.get(index)
+      deleteTask(item)
+        .then(() => tasks.remove(index))
+        .catch((e) => console.error(e))
+    }
+    alert.onDelete(deleteItemDBAndList)
+  }    
+    
+  
+
+  /**
    * Manejador de estado de la tarea  ( completada / no completada )
    * Actualiza el estado usando las funciones del hook personalizado useList
    * @param {number} index Posicion en el array de tareas
@@ -47,7 +69,7 @@ const TaskList = ({ showSettings, setShowSettings }) => {
   const handlerCompleted = (index, value) => {
     // Actualizar DB con el nuevo valor de la tarea
     const item = tasks.get(index)
-    console.log('Item en handlerCompleted: ', item)
+    console.log('Item seleccionado en handlerCompleted: ', item)
     toggleComplete(item)
       // Cuando se haya cambiado la tarea en la DB incorporamos el cambio a la lista para ser mostradas
       .then(() => {
@@ -105,7 +127,9 @@ const TaskList = ({ showSettings, setShowSettings }) => {
                       key={`b1${index}`}
                       type="button"
                       className={`${btnTailWind} bg-red-400 hover:bg-red-600`}
-                      onClick={() => tasks.remove(index)}
+                      // eslint-disable-next-line no-restricted-globals
+                      // onClick={() => confirm("¿Seguro que quieres eliminar esta tarea?") && delTask(index)}
+                      onClick = { () => delTask(index) } 
                     >
                       Del
                     </button>

@@ -1,4 +1,4 @@
-import { addDoc, getDocs, collection, setDoc, doc } from 'firebase/firestore'
+import { addDoc, getDocs, collection, setDoc, doc, deleteDoc } from 'firebase/firestore'
 import { db } from './index'
 
 /**
@@ -20,14 +20,27 @@ export const getTasks = async () => {
   const tasks = querySnapshot.docs.map(doc => {
     return { ...doc.data(), id: doc.id } 
   })
-  // console.log('Task en TaskController: ', tasks)
   return tasks
 }
 
+/**
+ * Cambia el estado de 'complete' a su booleano contrario
+ * @param {*} task 
+ * @returns action delete
+ */
 export const toggleComplete = (task) => {
   return setDoc(doc(db,'tasks', task.id), {
     ...task,
     completed: !task.completed
   })
 }
+
+/**
+ * Borra la tarea seleccionada
+ * @param {*} task Tarea a borrar
+ */
+export const deleteTask = async (task) => {
+  await deleteDoc(doc(db, 'tasks', task.id));
+}
+
 
