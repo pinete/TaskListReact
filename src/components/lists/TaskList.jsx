@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import useList from '../../hooks/useList';
 import { motion } from 'framer-motion'
 import { addTask, getTasks, toggleComplete } from '../../firebase/TasksController';
@@ -14,7 +14,6 @@ import { addTask, getTasks, toggleComplete } from '../../firebase/TasksControlle
  * @returns (React.Component)
  */
 const TaskList = ({ showSettings, setShowSettings }) => {
-
   const [newTask, setNewTask] = useState('');
   const tasks = useList(getTasks)
 

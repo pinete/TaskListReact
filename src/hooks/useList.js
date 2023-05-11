@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { getTasks } from '../firebase/TasksController';
 
 /**
  * Hook personalizado para manejo de listas
@@ -19,6 +18,7 @@ const useList = (getObject) => {
             .catch(error => {
                 console.error(error);
             })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
 
     /**
