@@ -1,6 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import useList from '../../hooks/useList';
 import { motion } from 'framer-motion'
+import { addTask, getTasks, toggleComplete } from '../../firebase/TasksController';
+
+// import useInitialTasks from '../../hooks/useInitialTasks';
 
 // Usamos Tailwind para los estilos y framer-motion para las animaciones
 // Al asociar, por ejemplo un boton, a motion lo que hacemos es añadirle nuevas posibilidades de props
@@ -11,17 +14,29 @@ import { motion } from 'framer-motion'
  * @returns (React.Component)
  */
 const TaskList = ({ showSettings, setShowSettings }) => {
-  const tasks = useList([]);
+
   const [newTask, setNewTask] = useState('');
-  
+  const tasks = useList(getTasks)
 
   /**
-   * Añade una nueva tarea a la lista y vacía el input
+   * Añade una nueva tarea a BD. Si todo OK la añade tambien a la 
+   * lista para ser mostrada, y en todos los casos vacía el input.
    */
   const addNewTask = () => {
-    if (newTask === "") return; //
-    tasks.push({ text: newTask, completed: false });
-    setNewTask('');
+    // Si está vacio no hace nada
+    if (newTask === "") return; 
+    // Añadimos una nueva tarea a la base de datos
+    addTask({ text: newTask, completed: false })
+      // Cuando se haya añadido a la DB la incorporamos a la lista para ser mostrada
+      .then(() => {
+        tasks.push({ text: newTask, completed: false }); 
+      })
+      // Si se produce un error
+      .catch((e) => {
+        console.error(e)
+      })
+      // En cualquier caso
+      .finally(() => setNewTask(''));
   };
 
   /**
@@ -31,7 +46,18 @@ const TaskList = ({ showSettings, setShowSettings }) => {
    * @param {boolean} value Valor del campo 'completed'
    */
   const handlerCompleted = (index, value) => {
-    tasks.update(index, 'completed', !value);
+    // Actualizar DB con el nuevo valor de la tarea
+    const item = tasks.get(index)
+    console.log('Item en handlerCompleted: ', item)
+    toggleComplete(item)
+      // Cuando se haya cambiado la tarea en la DB incorporamos el cambio a la lista para ser mostradas
+      .then(() => {
+        tasks.update(index, 'completed', !value);  
+      })
+      // Si se produce un error
+      .catch((e) => {
+        console.error(e)
+      })
   };
 
   // Configuracion base de TailWind
@@ -87,7 +113,7 @@ const TaskList = ({ showSettings, setShowSettings }) => {
                     <button
                       key={`b2${index}`}
                       type="button"
-                      className={`${btnTailWind} w-1/6  hover:text-white 
+                      className={`${btnTailWind} hover:text-white 
                         ${task.completed ? 
                             "ml-2 bg-amber-400 hover:bg-amber-600"
                           : 
@@ -96,7 +122,7 @@ const TaskList = ({ showSettings, setShowSettings }) => {
                       `}
                       onClick={() => handlerCompleted(index, task.completed)}
                     >
-                      {task.completed ? 'Completed' : 'Active'}
+                      {task.completed ? 'Done' : 'ToDo'}
                     </button>
                     <span 
                       key={`s1${index}`} 

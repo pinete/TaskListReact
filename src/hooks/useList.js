@@ -1,12 +1,35 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { getTasks } from '../firebase/TasksController';
 
 /**
  * Hook personalizado para manejo de listas
- * @param {object} initialValue
+ * @param {function} getObject -> procedimiento get de firestore para capturar datos iniciales
  * @returns {any} value, setValue, push, remove, isEmpty, clear, sort, reverse
  */
-const useList = (initialValue = []) => {
-    const [value, setValue] = useState(initialValue);
+const useList = (getObject) => {
+
+    const [value, setValue] = useState([]);
+    console.log('Items en la lista: ', value)
+
+    useEffect(() => { 
+        getObject()
+            .then(response => {
+                setValue([...response]) 
+            })
+            .catch(error => {
+                console.error(error);
+            })
+    },[])
+
+    /**
+     * Devuelve el item de la lista correspondiente a la posición index
+     * @param {*} index = Indice en la lista
+     * @returns item
+     */
+    const get = (index) => {
+        const item = value[index]
+        return item
+    }
 
     /**
      * Añade un nuevo elemento a la lista
@@ -97,7 +120,7 @@ const useList = (initialValue = []) => {
     };
 
     return {
-            value, setValue, push, remove, update, clear, sort, reverse, isEmpty,
+            value, setValue, get, push, remove, update, clear, sort, reverse, isEmpty,
         };
 };
 
