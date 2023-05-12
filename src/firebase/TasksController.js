@@ -6,8 +6,10 @@ import { db } from './index'
  * @param {object} task 
  * @returns action
  */
-export const addTask = (task) => {
-  return addDoc(collection(db, 'tasks'), task);
+export const addTask = async (task) => {
+  const docRef = await addDoc(collection(db, 'tasks'), task)
+  // console.log('ID en addTask: ', docRef.id)
+  return docRef.id ;
 }
 
 /**
@@ -16,7 +18,6 @@ export const addTask = (task) => {
  */
 export const getTasks = async () => {
   const querySnapshot = await getDocs(collection(db, 'tasks'));
-
   const tasks = querySnapshot.docs.map(doc => {
     return { ...doc.data(), id: doc.id } 
   })
@@ -41,6 +42,10 @@ export const toggleComplete = (task) => {
  */
 export const deleteTask = async (task) => {
   await deleteDoc(doc(db, 'tasks', task.id));
+}
+
+export const deleteAllTasks = () => {
+
 }
 
 

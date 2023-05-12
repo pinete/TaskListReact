@@ -29,9 +29,11 @@ const TaskList = ({ showSettings, setShowSettings }) => {
     if (newTask === "") return; 
     // Añadimos una nueva tarea a la base de datos
     addTask({ text: newTask, completed: false })
-      // Cuando se haya añadido a la DB la incorporamos a la lista para ser mostrada
-      .then(() => {
-        tasks.push({ text: newTask, completed: false }); 
+    // Cuando se haya añadido a la DB la incorporamos a la lista 
+    // incluyendo el id devuelto para ser mostrada
+    .then((id) => {
+      console.log('task en taskList: ', id)
+      tasks.push({ text: newTask, completed: false , id});
       })
       // Si se produce un error
       .catch((e) => {
@@ -45,20 +47,16 @@ const TaskList = ({ showSettings, setShowSettings }) => {
    * Borra de la DB y de la lista la tarea seleccionada con la posicion index
    * @param {*} index  Posicion en la lista
    */
-
-
   const delTask = (index) => {
-
+    //Funcion enviada a sweetAlert para el caso de confirmación
     const deleteItemDBAndList = () => {
       const item = tasks.get(index)
       deleteTask(item)
         .then(() => tasks.remove(index))
         .catch((e) => console.error(e))
     }
-    alert.onDelete(deleteItemDBAndList)
+    alert.onDelete(deleteItemDBAndList, 'task')
   }    
-    
-  
 
   /**
    * Manejador de estado de la tarea  ( completada / no completada )
@@ -161,7 +159,7 @@ const TaskList = ({ showSettings, setShowSettings }) => {
               </ul>
             )}
         <div className="mt-2" role="group" aria-label="Action Buttons">
-          <button className={`${btnTailWind} mr-2 bg-red-400 hover:bg-red-600`} type="button" onClick={tasks.clear}>Clear all</button>
+          <button className={`${btnTailWind} mr-2 bg-red-400 hover:bg-red-600`} type="button" onClick={tasks.clear}>Clear screen</button>
           <button className={`${btnTailWind} mr-2 bg-purple-400 hover:bg-purple-600`} type="button" onClick={tasks.sort}>Sort</button>
           <button className={`${btnTailWind} mr-2 bg-teal-400 hover:bg-teal-600`} type="button" onClick={tasks.reverse}>Reverse</button>
         </div>
