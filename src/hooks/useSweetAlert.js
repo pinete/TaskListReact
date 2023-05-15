@@ -18,9 +18,12 @@ const swBaseOkCancel = (obj, func) => {
     title: obj.title1,
     text: obj.text1,
     icon: obj.icon,
+    inputAttributes: {
+      id: "modalOkCancel",
+    },
     showCancelButton: true,
-    confirmButtonColor: '#3085d6',
-    cancelButtonColor: '#d33',
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#3085d6',
     confirmButtonText: obj.confirmButtonText,
     focusConfirm: false,
     focusCancel: true,
@@ -32,7 +35,7 @@ const swBaseOkCancel = (obj, func) => {
         title: obj.title2,
         text: obj.text2,
         icon: obj.icon2,
-        timer: 4000
+        timer: 1000
       })  
     }
   }).catch((e) => console.error(e)) 

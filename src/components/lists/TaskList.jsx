@@ -79,9 +79,15 @@ const TaskList = ({ showSettings, setShowSettings }) => {
       })
   };
 
-  // Configuracion base de TailWind
-  const btnTailWind = "shadow py-1 px-2 rounded hover:text-white transition duration-250"
+  
+  // Configuracion base de TailWind.
+  /*
+  const btnTailWind = "shadow py-1 px-2 rounded hover:text-white transition duration-200"
   const inputTailWind = "shadow py-1 px-2 rounded-lg outline-none focus:ring-2 mr-2 transition-all duration-300"
+  */
+  // ATENCION: Lo puedo usar así, insertandolo luego en la clase de esta forma: "className={`${inputTailWind} dark:bg-slate-700`}"
+  // pero tambien puedo crear la clase TailWind en index.css, que es como está (abre el archivo CSS para ver como)
+  
 
   return (
     <>
@@ -99,15 +105,16 @@ const TaskList = ({ showSettings, setShowSettings }) => {
       <div>
         <div className='my-4'>
           <input
-            className={`${inputTailWind} dark:bg-slate-700`}
+            className={`inputTailWind dark:bg-slate-700`}
             type="text"
             value={newTask}
             onKeyDown={(e) => e.key === 'Enter' && addNewTask()} // añade nueva tarea al pulsar tecla 'ENTER' sobre el input
             onChange={(e) => setNewTask(e.target.value)}
             placeholder="New Task"
           />
-          <button  
-            className={`${btnTailWind} rounded bg-sky-300 hover:bg-sky-400 hover:text-white`}
+          <button 
+            id="btnCreateTask"
+            className={`btnTailWind rounded bg-sky-300 hover:bg-sky-400 hover:text-white`}
             type="button" onClick={addNewTask}>Create Task
           </button>
         </div>
@@ -124,7 +131,7 @@ const TaskList = ({ showSettings, setShowSettings }) => {
                     <button
                       key={`b1${index}`}
                       type="button"
-                      className={`${btnTailWind} bg-red-400 hover:bg-red-600`}
+                      className={`btnTailWind bg-red-400 hover:bg-red-600 testb1`}
                       // eslint-disable-next-line no-restricted-globals
                       // onClick={() => confirm("¿Seguro que quieres eliminar esta tarea?") && delTask(index)}
                       onClick = { () => delTask(index) } 
@@ -134,7 +141,7 @@ const TaskList = ({ showSettings, setShowSettings }) => {
                     <button
                       key={`b2${index}`}
                       type="button"
-                      className={`${btnTailWind} hover:text-white 
+                      className={`btnTailWind hover:text-white 
                         ${task.completed ? 
                             "ml-2 bg-amber-400 hover:bg-amber-600"
                           : 
@@ -159,9 +166,9 @@ const TaskList = ({ showSettings, setShowSettings }) => {
               </ul>
             )}
         <div className="mt-2" role="group" aria-label="Action Buttons">
-          <button className={`${btnTailWind} mr-2 bg-red-400 hover:bg-red-600`} type="button" onClick={tasks.clear}>Clear screen</button>
-          <button className={`${btnTailWind} mr-2 bg-purple-400 hover:bg-purple-600`} type="button" onClick={tasks.sort}>Sort</button>
-          <button className={`${btnTailWind} mr-2 bg-teal-400 hover:bg-teal-600`} type="button" onClick={tasks.reverse}>Reverse</button>
+          <button className={`btnTailWind mr-2 bg-red-400 hover:bg-red-600`} type="button" onClick={tasks.clear}>Clear screen</button>
+          <button className={`btnTailWind mr-2 bg-purple-400 hover:bg-purple-600`} type="button" onClick={tasks.sort}>Sort</button>
+          <button className={`btnTailWind mr-2 bg-teal-400 hover:bg-teal-600`} type="button" onClick={tasks.reverse}>Reverse</button>
         </div>
       </div>
     </>

@@ -7,3 +7,13 @@
     @apply py-1 px-2 shadow rounded transition duration-200  bg-sky-300 hover:bg-sky-400 hover:text-white dark:bg-sky-600 dark:hover:bg-sky-800
   }
 }
+@layer components {
+  .btnTailWind {
+    @apply shadow py-1 px-2 rounded hover:text-white transition duration-200
+  }
+}
+@layer components {
+  .inputTailWind {
+    @apply shadow py-1 px-2 rounded-lg outline-none focus:ring-2 mr-2 transition-all duration-300
+  };
+}

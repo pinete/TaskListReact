@@ -1,5 +1,7 @@
 /// <reference types="cypress" />
 
+/* global cy */
+/* global context */
 context('Window', () => {
   beforeEach(() => {
     cy.visit('https://example.cypress.io/commands/window')

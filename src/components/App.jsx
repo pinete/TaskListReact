@@ -5,6 +5,8 @@ import Settings from './settings/Settings';
 // importamos animaciones framer-motion
 import { motion, AnimatePresence } from 'framer-motion'
 
+
+
 /**
  * Función Anónima para crear un Componente principal
  * @returns {React.Component} Componente principal de nuestra aplicación
